@@ -1,0 +1,152 @@
++*In[ ]:*+
+[source, ipython3]
+----
+#default Libraries
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+#==========================
+#special library
+#using Load_dataset from seaborn
+from seaborn import load_dataset
+#pract_9
+----
+
+
++*In[ ]:*+
+[source, ipython3]
+----
+#titanic dataset
+data = pd.read_csv("titanic.csv")
+#tips dataset
+tips = load_dataset("tips")
+----
+
+
++*In[ ]:*+
+[source, ipython3]
+----
+#printing survived + count of how survived using bar graph
+sns.countplot(data['Survived'])
+plt.show()
+----
+
+
++*In[ ]:*+
+[source, ipython3]
+----
+data['Sex'].value_counts().plot(kind="pie", autopct="%.2f")
+plt.show()
+----
+
+
++*In[ ]:*+
+[source, ipython3]
+----
+plt.hist(data['Fare'], bins=5)
+plt.show()
+----
+
+
++*In[ ]:*+
+[source, ipython3]
+----
+sns.distplot(data['Fare'])
+plt.show()
+----
+
+
++*In[ ]:*+
+[source, ipython3]
+----
+plt.scatter(tips["total_bill"], tips["tip"])
+plt.show()
+----
+
+
++*In[ ]:*+
+[source, ipython3]
+----
+sns.scatterplot(data=tips, x="total_bill", y="tip", hue="sex")
+plt.show()
+----
+
+
++*In[ ]:*+
+[source, ipython3]
+----
+sns.scatterplot(data=tips,x="total_bill", y="tip", hue="sex", style='smoker')
+plt.show()
+----
+
+
++*In[ ]:*+
+[source, ipython3]
+----
+sns.barplot(x='Pclass', y='Age', data=data)
+plt.show()
+----
+
+
++*In[ ]:*+
+[source, ipython3]
+----
+sns.barplot(x = 'Pclass', y = 'Fare', hue = "Sex",data=data)
+plt.show()
+----
+
+
++*In[ ]:*+
+[source, ipython3]
+----
+sns.boxplot(x = 'Sex', y = 'Age',data = data)
+plt.show()
+----
+
+
++*In[ ]:*+
+[source, ipython3]
+----
+sns.boxplot(x = 'Sex', y = 'Age', hue = 'Survived',data=data)
+plt.show()
+----
+
+
++*In[ ]:*+
+[source, ipython3]
+----
+sns.distplot(data[data['Survived'] == 0]['Age'], hist=False, color="blue")
+sns.distplot(data[data['Survived'] == 1]['Age'], hist=False, color="orange")
+plt.show()
+----
+
+
++*In[ ]:*+
+[source, ipython3]
+----
+pd.crosstab(data['Pclass'], data['Survived'])
+----
+
+
++*In[ ]:*+
+[source, ipython3]
+----
+sns.heatmap(pd.crosstab(data['Pclass'], data['Survived']))
+plt.show()
+----
+
+
++*In[ ]:*+
+[source, ipython3]
+----
+sns.clustermap(pd.crosstab(data['Parch'], data['Survived']))
+plt.show()
+----
+
+
++*In[ ]:*+
+[source, ipython3]
+----
+
+----

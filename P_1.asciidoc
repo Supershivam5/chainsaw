@@ -1,0 +1,217 @@
++*In[ ]:*+
+[source, ipython3]
+----
+#default Libraries
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+#pract_1
+----
+
+
++*In[ ]:*+
+[source, ipython3]
+----
+#importing dataset
+weather=pd.read_csv("weatherAUS.csv")
+weather.head()
+----
+
+
++*In[ ]:*+
+[source, ipython3]
+----
+weather.head(2)
+----
+
+
++*In[ ]:*+
+[source, ipython3]
+----
+weather.tail(2)
+----
+
+
++*In[ ]:*+
+[source, ipython3]
+----
+weather.index
+----
+
+
++*In[ ]:*+
+[source, ipython3]
+----
+weather.columns
+----
+
+
++*In[ ]:*+
+[source, ipython3]
+----
+weather.shape
+----
+
+
++*In[ ]:*+
+[source, ipython3]
+----
+weather.dtypes
+----
+
+
++*In[ ]:*+
+[source, ipython3]
+----
+weather.columns.values
+----
+
+
++*In[ ]:*+
+[source, ipython3]
+----
+weather.describe()
+----
+
+
++*In[ ]:*+
+[source, ipython3]
+----
+weather["Rainfall"]
+----
+
+
++*In[ ]:*+
+[source, ipython3]
+----
+weather.sort_index(axis=1,ascending=True)
+----
+
+
++*In[ ]:*+
+[source, ipython3]
+----
+weather.iloc[10]
+----
+
+
++*In[ ]:*+
+[source, ipython3]
+----
+weather[7:10]
+----
+
+
++*In[ ]:*+
+[source, ipython3]
+----
+weather.loc[10:30,["Rainfall","MaxTemp"]]
+----
+
+
++*In[ ]:*+
+[source, ipython3]
+----
+weather.iloc[:10,:]
+----
+
+
++*In[ ]:*+
+[source, ipython3]
+----
+weather.iloc[:,:60]
+----
+
+
++*In[ ]:*+
+[source, ipython3]
+----
+weather.iloc[:30,:60]
+----
+
+
++*In[ ]:*+
+[source, ipython3]
+----
+weather.iloc[3:5,0:6]
+----
+
+
++*In[ ]:*+
+[source, ipython3]
+----
+weather.iloc[[1, 2,4], [0, 2]]
+----
+
+
++*In[ ]:*+
+[source, ipython3]
+----
+weather.iloc[1:3, :]
+----
+
+
++*In[ ]:*+
+[source, ipython3]
+----
+weather.iloc[:, 1:3]
+----
+
+
++*In[ ]:*+
+[source, ipython3]
+----
+weather.iloc[1, 1]
+----
+
+
++*In[ ]:*+
+[source, ipython3]
+----
+weather['MinTemp'].iloc[5]
+----
+
+
++*In[ ]:*+
+[source, ipython3]
+----
+cols_2_4=weather.columns[2:4]
+weather[cols_2_4]
+----
+
+
++*In[ ]:*+
+[source, ipython3]
+----
+weather[weather.columns[2:4]].iloc[5:10]
+----
+
+
++*In[ ]:*+
+[source, ipython3]
+----
+weather.iloc[:,:60]
+----
+
+
++*In[ ]:*+
+[source, ipython3]
+----
+weather['Rainfall']=weather['Rainfall'].astype("object")
+weather.dtypes
+----
+
+
++*In[ ]:*+
+[source, ipython3]
+----
+weather.iloc[:30,:60]
+----
+
+
++*In[ ]:*+
+[source, ipython3]
+----
+
+----

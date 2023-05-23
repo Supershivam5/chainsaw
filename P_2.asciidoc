@@ -1,0 +1,295 @@
++*In[ ]:*+
+[source, ipython3]
+----
+#default Libraries
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+#special library
+from sklearn.preprocessing import LabelEncoder
+from scipy import stats
+#pract_2
+----
+
+
++*In[ ]:*+
+[source, ipython3]
+----
+#importing dataset
+ap=pd.read_csv("ap.csv")
+ap.head(4)
+----
+
+
++*In[ ]:*+
+[source, ipython3]
+----
+ap.isnull()
+----
+
+
++*In[ ]:*+
+[source, ipython3]
+----
+series = pd.isnull(ap["math_score"])
+ap[series]
+----
+
+
++*In[ ]:*+
+[source, ipython3]
+----
+series1 = pd.notnull(ap["math_score"])
+ap[series1]
+----
+
+
++*In[ ]:*+
+[source, ipython3]
+----
+#used LabeLEncoder from sklearn here
+le = LabelEncoder()
+ap['gender'] = le.fit_transform(ap['gender'])
+newap=ap
+ap
+----
+
+
++*In[ ]:*+
+[source, ipython3]
+----
+nap=ap
+nap.fillna(0)
+----
+
+
++*In[ ]:*+
+[source, ipython3]
+----
+m_v=ap['math_score'].mean()
+ap['math_score'].fillna(value=m_v, inplace=True)
+ap
+----
+
+
++*In[ ]:*+
+[source, ipython3]
+----
+nap.replace(to_replace = np.nan, value = -99)
+----
+
+
++*In[ ]:*+
+[source, ipython3]
+----
+nap.dropna()
+----
+
+
++*In[ ]:*+
+[source, ipython3]
+----
+nap.dropna(how = 'all')
+----
+
+
++*In[ ]:*+
+[source, ipython3]
+----
+nap.dropna(axis = 1)
+----
+
+
++*In[ ]:*+
+[source, ipython3]
+----
+nd= nap.dropna(axis = 0, how ='any')
+nd
+----
+
+
++*In[ ]:*+
+[source, ipython3]
+----
+col = ['math_score', 'reading_score' , 'writing_score','placement_score']
+ap.boxplot(col)
+plt.show()
+----
+
+
++*In[ ]:*+
+[source, ipython3]
+----
+print(np.where(ap['math_score']>90))
+----
+
+
++*In[ ]:*+
+[source, ipython3]
+----
+print(np.where(ap['reading_score']<25))
+----
+
+
++*In[ ]:*+
+[source, ipython3]
+----
+print(np.where(ap['writing_score']<30))
+----
+
+
++*In[ ]:*+
+[source, ipython3]
+----
+fig, ax = plt.subplots(figsize = (18,10))
+ax.scatter(ap['placement_score'], ap['placement_offer_count'])
+plt.show()
+----
+
+
++*In[ ]:*+
+[source, ipython3]
+----
+print(np.where((ap['placement_score']<50) & (ap['placement_score']>85) & (ap['placement_offer_count']>1)))
+print(np.where((ap['placement_offer_count']<3)))
+----
+
+
++*In[ ]:*+
+[source, ipython3]
+----
+#used stats from scipy
+z = np.abs(stats.zscore(ap['math_score']))
+print(z)
+----
+
+
++*In[ ]:*+
+[source, ipython3]
+----
+threshold = 0.18
+sample_outliers = np.where(z <threshold)
+sample_outliers
+----
+
+
++*In[ ]:*+
+[source, ipython3]
+----
+sorted_rscore= sorted(ap['math_score'])
+sorted_rscore
+----
+
+
++*In[ ]:*+
+[source, ipython3]
+----
+q1 = np.percentile(sorted_rscore, 25)
+q3 = np.percentile(sorted_rscore, 75)
+print(q1,q3)
+----
+
+
++*In[ ]:*+
+[source, ipython3]
+----
+IQR = q3-q1
+lwr_bound = q1-(1.5*IQR)
+upr_bound = q3+(1.5*IQR)
+print(lwr_bound, upr_bound)
+----
+
+
++*In[ ]:*+
+[source, ipython3]
+----
+r_outliers = []
+for i in sorted_rscore:
+    if (i<lwr_bound or i>upr_bound):
+        r_outliers.append(i)
+print(r_outliers)
+----
+
+
++*In[ ]:*+
+[source, ipython3]
+----
+new_df=ap
+for i in sample_outliers:
+    new_df.drop(i,inplace=True)
+new_df
+----
+
+
++*In[ ]:*+
+[source, ipython3]
+----
+df_stud=ap
+ninetieth_percentile = np.percentile(df_stud['math_score'], 90)
+b = np.where(df_stud['math_score']>ninetieth_percentile,
+ninetieth_percentile, df_stud['math_score'])
+print("New array:",b)
+----
+
+
++*In[ ]:*+
+[source, ipython3]
+----
+df_stud.insert(1,"m score",b,True)
+df_stud
+----
+
+
++*In[ ]:*+
+[source, ipython3]
+----
+col = ['reading_score']
+ap.boxplot(col)
+plt.show()
+median=np.median(sorted_rscore)
+median
+----
+
+
++*In[ ]:*+
+[source, ipython3]
+----
+refined_df=ap
+refined_df['reading_score'] = np.where(refined_df['reading_score'] >upr_bound, median,refined_df['reading_score'])
+refined_df
+----
+
+
++*In[ ]:*+
+[source, ipython3]
+----
+refined_df['reading score'] = np.where(refined_df['reading_score'] <lwr_bound, median,refined_df['reading_score'])
+refined_df
+----
+
+
++*In[ ]:*+
+[source, ipython3]
+----
+col = ['reading score']
+refined_df.boxplot(col)
+plt.show()
+----
+
+
++*In[ ]:*+
+[source, ipython3]
+----
+new_df['math_score'].plot(kind = 'hist')
+ap['log_math'] = np.log10(ap['math_score'])
+plt.show()
+----
+
+
++*In[ ]:*+
+[source, ipython3]
+----
+ap['log_math'].plot(kind = 'hist')
+plt.show()
+----

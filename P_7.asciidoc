@@ -1,0 +1,271 @@
++*In[1]:*+
+[source, ipython3]
+----
+#default Libraries
+import pandas as pd
+#==========================
+#special library
+import nltk
+import re
+from nltk.tokenize import sent_tokenize
+from nltk.tokenize import word_tokenize
+from nltk.corpus import stopwords
+from nltk.stem import PorterStemmer
+from nltk.stem import WordNetLemmatizer
+from nltk.tokenize import word_tokenize
+from sklearn.feature_extraction.text import TfidfVectorizer
+import math
+#==========================
+#pract_7
+----
+
+
++*In[2]:*+
+[source, ipython3]
+----
+nltk.download('punkt')
+nltk.download('stopwords')
+nltk.download('wordnet')
+nltk.download('averaged_perceptron_tagger')
+----
+
+
++*Out[2]:*+
+----
+[nltk_data] Downloading package punkt to
+[nltk_data]     C:\Users\ASUS.DESKTOP-6AUA9SL\AppData\Roaming\nltk_dat
+[nltk_data]     a...
+[nltk_data]   Unzipping tokenizers\punkt.zip.
+[nltk_data] Downloading package stopwords to
+[nltk_data]     C:\Users\ASUS.DESKTOP-6AUA9SL\AppData\Roaming\nltk_dat
+[nltk_data]     a...
+[nltk_data]   Unzipping corpora\stopwords.zip.
+[nltk_data] Downloading package wordnet to
+[nltk_data]     C:\Users\ASUS.DESKTOP-6AUA9SL\AppData\Roaming\nltk_dat
+[nltk_data]     a...
+[nltk_data] Downloading package averaged_perceptron_tagger to
+[nltk_data]     C:\Users\ASUS.DESKTOP-6AUA9SL\AppData\Roaming\nltk_dat
+[nltk_data]     a...
+[nltk_data]   Unzipping taggers\averaged_perceptron_tagger.zip.
+True----
+
+
++*In[3]:*+
+[source, ipython3]
+----
+text = "Tokenization is the first step in text analytics.The process of breaking down a text paragraph into smaller chunks such as words or sentences is called Tokenization."
+----
+
+
++*In[4]:*+
+[source, ipython3]
+----
+#sentence tokenization
+tokenized_text=sent_tokenize(text)
+print(tokenized_text)
+#word tokenization
+tokenized_word=word_tokenize(text)
+print(tokenized_word)
+----
+
+
++*Out[4]:*+
+----
+['Tokenization is the first step in text analytics.The process of breaking down a text paragraph into smaller chunks such as words or sentences is called Tokenization.']
+['Tokenization', 'is', 'the', 'first', 'step', 'in', 'text', 'analytics.The', 'process', 'of', 'breaking', 'down', 'a', 'text', 'paragraph', 'into', 'smaller', 'chunks', 'such', 'as', 'words', 'or', 'sentences', 'is', 'called', 'Tokenization', '.']
+----
+
+
++*In[5]:*+
+[source, ipython3]
+----
+#Print stop words of english
+stop_words=set(stopwords.words("english"))
+print(stop_words)
+text="How to remove stop words with NLTK library in Python?"
+text=re.sub('[^a-zA-Z]',' ',text)
+tokens=word_tokenize(text.lower())
+filtered_text=[]
+for w in tokens:
+    if w not in stop_words:
+        filtered_text.append(w)
+print("Tokenized Sentence:",tokens)
+print("Filtered Sentence:",filtered_text)
+----
+
+
++*Out[5]:*+
+----
+{'this', 'down', 'between', "mightn't", 'some', "haven't", 'but', 'were', 'they', "isn't", 're', 'hasn', 'all', 'against', "won't", 'himself', 'so', "should've", "shouldn't", 'theirs', 'me', 's', 'have', "hasn't", 'ma', 'how', 'll', 'hadn', 'didn', "you'll", 'can', 'where', 'being', 'in', 'wasn', 'yourselves', 'doing', 'here', 'y', 'themselves', "it's", 'aren', "couldn't", 'wouldn', 'are', "you're", "hadn't", 'further', 'more', 'when', 'myself', 'needn', 'until', 'after', 'at', 'its', 'below', 'hers', 'about', "aren't", "shan't", 'them', 't', 'did', 'than', 'o', 'haven', 'by', 'shouldn', 'nor', 'your', 'mightn', 'weren', 'why', 'once', 'while', 'as', 'from', 'up', "didn't", 'i', 'above', 'was', 'does', 'won', 'to', 'through', 'has', 'over', 'she', 'yourself', 'with', 'again', 'out', 'and', 'doesn', "she's", 'having', 'my', 'a', 'yours', 'd', 'other', 'we', 'mustn', "don't", 'that', 'm', 'her', 'under', 'too', 'had', 'because', 'same', 'of', 'very', "needn't", "wouldn't", "that'll", 'am', 'isn', 'any', 'an', 'for', 'on', 'into', 'now', 'before', 'most', 'or', "doesn't", 'both', 'which', 'is', 'herself', 'don', 'couldn', 'ain', 'the', 'be', 'what', 'these', 'ourselves', "weren't", 'whom', 'he', 'not', "you've", "wasn't", 'their', 'no', 'few', "mustn't", 'such', 'it', 'should', 'own', 'you', 'only', 'each', 'during', 'who', 'do', 'ours', "you'd", 'if', 'those', 'then', 'will', 've', 'his', 'shan', 'there', 'off', 'just', 'been', 'him', 'our', 'itself'}
+Tokenized Sentence: ['how', 'to', 'remove', 'stop', 'words', 'with', 'nltk', 'library', 'in', 'python']
+Filtered Sentence: ['remove', 'stop', 'words', 'nltk', 'library', 'python']
+----
+
+
++*In[6]:*+
+[source, ipython3]
+----
+#Stemming
+e_words=["wait","waiting","waited","waits"]
+ps=PorterStemmer()
+for w in e_words:
+    rootWord=ps.stem(w)
+print(rootWord)
+----
+
+
++*Out[6]:*+
+----
+wait
+----
+
+
++*In[7]:*+
+[source, ipython3]
+----
+#Lemmetization
+wordnet_lemmatizer=WordNetLemmatizer()
+----
+
+
++*In[8]:*+
+[source, ipython3]
+----
+text="studies studying cries cry"
+tokenization=nltk.word_tokenize(text)
+for w in tokenization:
+    print("Lemma for {} is {}".format(w,wordnet_lemmatizer.lemmatize(w)))
+----
+
+
++*Out[8]:*+
+----
+Lemma for studies is study
+Lemma for studying is studying
+Lemma for cries is cry
+Lemma for cry is cry
+----
+
+
++*In[9]:*+
+[source, ipython3]
+----
+#Pos tagging
+data="The pink sweater fit her perfectly"
+words=word_tokenize(data)
+for word in words:
+    print(nltk.pos_tag([word]))
+----
+
+
++*Out[9]:*+
+----
+[('The', 'DT')]
+[('pink', 'NN')]
+[('sweater', 'NN')]
+[('fit', 'NN')]
+[('her', 'PRP$')]
+[('perfectly', 'RB')]
+----
+
+
++*In[10]:*+
+[source, ipython3]
+----
+#used TfidfVectorizer from sklearn & math here 
+documentA='Jupiter is the largest Planet'
+documentB='Mars is the fourth planet from the Sun'
+bagOfWordsA=documentA.split(' ')
+bagOfWordsB=documentB.split(' ')
+uniqueWords=set(bagOfWordsA).union(set(bagOfWordsB))
+numOfWordsA=dict.fromkeys(uniqueWords,0)
+for word in bagOfWordsA:
+    numOfWordsA[word]+=1
+    numOfWordsB=dict.fromkeys(uniqueWords,0)
+for word in bagOfWordsB:
+    numOfWordsB[word]+=1
+----
+
+
++*In[11]:*+
+[source, ipython3]
+----
+def computeTF(wordDict,bagOfWords):
+    tfDict={}
+    bagOfWordsCount = len(bagOfWords)
+    for word, count in wordDict.items():
+        tfDict[word] = count / float(bagOfWordsCount)
+        return tfDict
+tfA = computeTF(numOfWordsA, bagOfWordsA)
+tfB = computeTF(numOfWordsB, bagOfWordsB)
+----
+
+
++*In[12]:*+
+[source, ipython3]
+----
+def computeIDF(documents):
+    N = len(documents)
+    idfDict = dict.fromkeys(documents[0].keys(), 0)
+    for document in documents:
+        for word, val in document.items():
+            if val > 0:
+                idfDict[word] += 1
+    for word, val in idfDict.items():
+        idfDict[word] = math.log(N / float(val))
+        return idfDict
+idfs = computeIDF([numOfWordsA, numOfWordsB])
+idfs
+----
+
+
++*Out[12]:*+
+----{'fourth': 0.6931471805599453,
+ 'largest': 1,
+ 'Mars': 1,
+ 'Sun': 1,
+ 'the': 2,
+ 'Jupiter': 1,
+ 'planet': 1,
+ 'Planet': 1,
+ 'is': 2,
+ 'from': 1}----
+
+
++*In[14]:*+
+[source, ipython3]
+----
+def computeTFIDF(tfBagOfWords, idfs):
+    tfidf = {}
+    for word, val in tfBagOfWords.items():
+        tfidf[word] = val * idfs[word]
+        return tfidf
+tfidfA = computeTFIDF(tfA, idfs)
+tfidfB = computeTFIDF(tfB, idfs)
+df = pd.DataFrame([tfidfA, tfidfB])
+----
+
+
++*In[15]:*+
+[source, ipython3]
+----
+df
+----
+
+
++*Out[15]:*+
+----
+[cols=",",options="header",]
+|===
+| |fourth
+|0 |0.000000
+|1 |0.086643
+|===
+----
+
+
++*In[ ]:*+
+[source, ipython3]
+----
+
+----
